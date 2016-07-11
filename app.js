@@ -43,8 +43,11 @@ getAccessToken()
   .then(function(res){
     res = JSON.parse(res)
     access_token = res.access_token
-    console.log(access_token)
     createMenu()
+
+    setTimeout(function(){
+      getAccessToken()
+    }, 7000 * 1000)
   })
 
 app.use('/wechat', wechat(config, handle))
@@ -82,9 +85,9 @@ app.use(function(err, req, res, next) { // jshint ignore:line
 });
 
 function handle(req, res){
-  console.log(req.weixin.MsgType)
   switch (req.weixin.MsgType) {
     case 'text':
+      console.log('收到文字信息')
       robot(req.weixin.Content)
         .then(function(response){
           res.reply(JSON.parse(response).text)
