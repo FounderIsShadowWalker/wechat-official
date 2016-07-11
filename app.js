@@ -42,8 +42,9 @@ var access_token
 getAccessToken()
   .then(function(res){
     res = JSON.parse(res)
+    console.log('access_token获取成功，开始服务')
     access_token = res.access_token
-    createMenu()
+    // createMenu()
 
     setTimeout(function(){
       getAccessToken()
@@ -85,6 +86,7 @@ app.use(function(err, req, res, next) { // jshint ignore:line
 });
 
 function handle(req, res){
+  console.log('消息接口验证已通过')
   switch (req.weixin.MsgType) {
     case 'text':
       console.log('收到文字信息')
@@ -97,10 +99,11 @@ function handle(req, res){
         })
       break
     case 'event':
-      // console.log(req.weixin)
+      console.log(req.weixin)
       break
     default:
       console.log('???')
+      res.reply('我好像出了点问题')
       break
   }
 }
